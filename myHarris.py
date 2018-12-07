@@ -2,7 +2,7 @@ import cv2
 import numpy as np 
 
 img_target = cv2.imread("target.jpg", cv2.IMREAD_GRAYSCALE)
-img_data = cv2.imread("./dataset/5.jpg", cv2.IMREAD_GRAYSCALE)
+img_data = cv2.imread("./testdata/b.jpg", cv2.IMREAD_GRAYSCALE)
 
 def getGrad(img0):
     img = cv2.GaussianBlur(img0, ksize=(7,7), sigmaX=1.03) * 1.0
