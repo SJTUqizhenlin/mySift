@@ -25,14 +25,14 @@ def getGrad(img0):
             if grad_direct[i,j] < 0:
                 grad_direct[i,j] = grad_direct[i,j] + (np.pi*2)
     tmpimg = np.array(img0)
-    cv2.imshow("allgrad", tmpimg)
+    cv2.imshow("grayImg", tmpimg)
     cv2.waitKey(0)
     for i in range(0,M,10):
         for j in range(0,N,10):
             endx = i + int(np.cos(grad_direct[i,j])*5)
             endy = j + int(np.sin(grad_direct[i,j])*5)
             tmpimg = cv2.line(tmpimg, (j,i), (endy,endx), 255)
-    cv2.imshow("allgrad", tmpimg)
+    cv2.imshow("theGrad", tmpimg)
     cv2.waitKey(0)
     return grad_norm, grad_direct
 
@@ -105,7 +105,7 @@ def getKPandDES(img, MaxCorner):
         endy = begy + int(30 * np.sin(main_direct_list[ip]))
         endx = begx + int(30 * np.cos(main_direct_list[ip]))
         img_tmp = cv2.line(img_tmp, (begy, begx), (endy, endx), 255, 2)
-    cv2.imshow("Direct", img_tmp)
+    cv2.imshow("Direction", img_tmp)
     cv2.waitKey(0)
     kplist = []
     for i in range(MaxCorner):
