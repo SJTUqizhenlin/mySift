@@ -1,2 +1,2 @@
 # mySift
-image features, sitf algorithm
+image features, sift algorithm
