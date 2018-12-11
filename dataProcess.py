@@ -27,10 +27,9 @@ def siftOnGraph(imgName):
         KPDESlist.append({"kp":kp2list, "des":des2, "gsize":img_data.shape})
     pkname = os.path.join("./dataset", getValidFileName(imgName))
     pkfile = open(pkname+".pkl", "wb")
-    ob = {"img":img_data_color, "KPDESlist":KPDESlist}
+    ob = {"img":img_data_color, "filename":imgName, "KPDESlist":KPDESlist}
     pk.dump(ob, pkfile)
     pkfile.close()
-    print("Done.")
 
 if __name__=="__main__":
     rootPath = "./dataset"

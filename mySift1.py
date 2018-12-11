@@ -1,6 +1,7 @@
 import cv2 
 import numpy as np 
 
+
 def getGrad(img0):
     img = cv2.GaussianBlur(img0, ksize=(7,7), sigmaX=1.03) * 1.0
     cannyKerX = np.array([[-3,-10,-3],
@@ -156,4 +157,3 @@ def drawKPDES(img_target, kp1, des1, img_data, kpdes):
         nice_match, img_match, matchColor=[0,0,255], singlePointColor=[255,0,0])
     cv2.imshow("MyMatch", img_match)
     cv2.waitKey(0)
-

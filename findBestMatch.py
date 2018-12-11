@@ -27,6 +27,9 @@ def showBestMatch(img_target, kp1, des1, dataID):
     data = pk.load(f)
     f.close()
     img_data = data["img"]
+    imgName = data["filename"]
+    print()
+    print("Best match image: '{0}' ".format(imgName))
     KPDESlist = data["KPDESlist"]
     maxNum = 0
     maxID = 0
@@ -71,5 +74,6 @@ if __name__=="__main__":
         if count > maxMatch:
             maxMatch = count
             matchID = dataname
+    print()
     print("Best number of match points:", maxMatch)
     showBestMatch(img_target_color, kp1, des1, matchID)
