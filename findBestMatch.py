@@ -64,12 +64,13 @@ if __name__=="__main__":
     maxMatch = 0
     matchID = ""
     for dataname in dataListName:
-        print("Comparing with {0} ...".format(dataname))
         f = open(dataname, "rb")
         data = pk.load(f)
         f.close()
         # cv2.imshow("IMG", data["img"])
         # cv2.waitKey(0)
+        imgName = data["filename"]
+        print("Comparing with {0} ...".format(imgName))
         count = countMatchNumber(kp1, des1, data)
         if count > maxMatch:
             maxMatch = count
