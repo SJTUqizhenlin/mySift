@@ -150,7 +150,7 @@ def drawKPDES(img_target, kp1, des1, img_data, kpdes):
     for i in range(len(kp2)):
         x = kp2[i][0]
         y = kp2[i][1]
-        s = kp2[i][2]
+        s = kp2[i][2] 
         kp2New.append(cv2.KeyPoint(x/ratio, y/ratio, _size=s))
     kp2 = kp2New
     img_match = cv2.drawMatchesKnn(img_target, kp1, img_data, kp2, 
