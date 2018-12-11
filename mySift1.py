@@ -1,9 +1,6 @@
 import cv2 
 import numpy as np 
 
-img_target = cv2.imread("target.jpg", cv2.IMREAD_GRAYSCALE)
-img_data = cv2.imread("./testdata/b.jpg", cv2.IMREAD_GRAYSCALE)
-
 def getGrad(img0):
     img = cv2.GaussianBlur(img0, ksize=(7,7), sigmaX=1.03) * 1.0
     cannyKerX = np.array([[-3,-10,-3],
@@ -25,15 +22,15 @@ def getGrad(img0):
             if grad_direct[i,j] < 0:
                 grad_direct[i,j] = grad_direct[i,j] + (np.pi*2)
     tmpimg = np.array(img0)
-    cv2.imshow("grayImg", tmpimg)
-    cv2.waitKey(0)
+    # cv2.imshow("grayImg", tmpimg)
+    # cv2.waitKey(0)
     for i in range(0,M,10):
         for j in range(0,N,10):
             endx = i + int(np.cos(grad_direct[i,j])*5)
             endy = j + int(np.sin(grad_direct[i,j])*5)
             tmpimg = cv2.line(tmpimg, (j,i), (endy,endx), 255)
-    cv2.imshow("theGrad", tmpimg)
-    cv2.waitKey(0)
+    # cv2.imshow("theGrad", tmpimg)
+    # cv2.waitKey(0)
     return grad_norm, grad_direct
 
 def subGraph(img, direct, x, y, main_direct):
@@ -105,28 +102,58 @@ def getKPandDES(img, MaxCorner):
         endy = begy + int(30 * np.sin(main_direct_list[ip]))
         endx = begx + int(30 * np.cos(main_direct_list[ip]))
         img_tmp = cv2.line(img_tmp, (begy, begx), (endy, endx), 255, 2)
-    cv2.imshow("Direction", img_tmp)
-    cv2.waitKey(0)
+    # cv2.imshow("Direction", img_tmp)
+    # cv2.waitKey(0)
     kplist = []
     for i in range(MaxCorner):
         x = kp[i][0][0]
         y = kp[i][0][1]
-        kplist.append(cv2.KeyPoint(x, y, 1.1))
+        kplist.append(cv2.KeyPoint(x, y, _size=grad_norm[int(y),int(x)]))
     return kplist, np.array(des, dtype=np.float32)
 
-kp1, des1 = getKPandDES(img_target, 200)
-kp2, des2 = getKPandDES(img_data, 200)
+def getIMGpyramid(img):
+    res = [img]
+    M = img.shape[0]
+    N = img.shape[1]
+    minMN = min(M, N)
+    maxMN = max(M, N)
+    while minMN >= 96:
+        nxt = cv2.resize(res[-1], (0,0), fx=0.8, fy=0.8)
+        res.append(nxt)
+        M = res[-1].shape[0]
+        N = res[-1].shape[1]
+        minMN = min(M, N)
+    while maxMN <= 960:
+        nxt = cv2.resize(res[0], (0,0), fx=1.25, fy=1.25)
+        res.insert(0, nxt)
+        M = res[0].shape[0]
+        N = res[0].shape[1]
+        maxMN = max(M, N)
+    return res
 
-bf = cv2.BFMatcher()
-matches = bf.knnMatch(des1, des2, k=2)
-nice_match = []
-for m, n in matches:
-    if m.distance < 0.8 * n.distance:
-        nice_match.append([m])
-M = max([img_target.shape[0], img_data.shape[0]])
-N = img_target.shape[1] + img_data.shape[1]
-img_match = np.zeros((M, N))
-img_match = cv2.drawMatchesKnn(img_target, kp1, img_data, kp2, 
-    nice_match, img_match, matchColor=[0,0,255], singlePointColor=[255,0,0])
-cv2.imshow("MyMatch", img_match)
-cv2.waitKey(0)
+def drawKPDES(img_target, kp1, des1, img_data, kpdes):
+    kp2 = kpdes["kp"]
+    des2 = kpdes["des"] 
+    shape2 = kpdes["gsize"]
+    bf = cv2.BFMatcher()
+    matches = bf.knnMatch(des1, des2, k=2)
+    nice_match = []
+    for m, n in matches:
+        if m.distance < 0.8 * n.distance:
+            nice_match.append([m])
+    M = max([img_target.shape[0], img_data.shape[0]])
+    N = img_target.shape[1] + img_data.shape[1]
+    img_match = np.zeros((M, N))
+    kp2New = []
+    ratio = shape2[0] / img_data.shape[0]
+    for i in range(len(kp2)):
+        x = kp2[i][0]
+        y = kp2[i][1]
+        s = kp2[i][2]
+        kp2New.append(cv2.KeyPoint(x/ratio, y/ratio, _size=s))
+    kp2 = kp2New
+    img_match = cv2.drawMatchesKnn(img_target, kp1, img_data, kp2, 
+        nice_match, img_match, matchColor=[0,0,255], singlePointColor=[255,0,0])
+    cv2.imshow("MyMatch", img_match)
+    cv2.waitKey(0)
+

@@ -7,6 +7,8 @@ img_data = cv2.imread("./dataset/3.jpg", cv2.IMREAD_GRAYSCALE)
 sift = cv2.xfeatures2d.SIFT_create(nfeatures=200)
 kp1, des1 = sift.detectAndCompute(img_target, None)
 kp2, des2 = sift.detectAndCompute(img_data, None)
+for i in range(20):
+    print(kp2[i].pt)
 bf = cv2.BFMatcher()
 matches = bf.knnMatch(des1, des2, k=2)
 nice_match = []
