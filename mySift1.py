@@ -140,7 +140,7 @@ def drawKPDES(img_target, kp1, des1, img_data, kpdes):
     matches = bf.knnMatch(des1, des2, k=2)
     nice_match = []
     for m, n in matches:
-        if m.distance < 0.7 * n.distance:
+        if m.distance < 0.8 * n.distance:
             nice_match.append([m])
     M = max([img_target.shape[0], img_data.shape[0]])
     N = img_target.shape[1] + img_data.shape[1]

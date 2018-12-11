@@ -8,14 +8,13 @@ def countMatchNumber(kp1, des1, data):
     res = 0
     KPDESlist = data["KPDESlist"]
     for i in range(len(KPDESlist)):
-        kp2 = KPDESlist[i]["kp"]
         des2 = KPDESlist[i]["des"]
         shape2 = KPDESlist[i]["gsize"]
         bf = cv2.BFMatcher()
         matches = bf.knnMatch(des1, des2, k=2)
         nice_match = []
         for m, n in matches:
-            if m.distance < 0.7 * n.distance:
+            if m.distance < 0.8 * n.distance:
                 nice_match.append([m])
         if len(nice_match) > res:
             res = len(nice_match)
@@ -35,13 +34,12 @@ def showBestMatch(img_target, kp1, des1, dataID):
     maxID = 0
     bf = cv2.BFMatcher()
     for i in range(len(KPDESlist)):
-        kp2 = KPDESlist[i]["kp"]
         des2 = KPDESlist[i]["des"]
         shape2 = KPDESlist[i]["gsize"]
         matches = bf.knnMatch(des1, des2, k=2)
         nice_match = []
         for m, n in matches:
-            if m.distance < 0.7 * n.distance:
+            if m.distance < 0.8 * n.distance:
                 nice_match.append([m])
         if len(nice_match) > maxNum:
             maxNum = len(nice_match)
@@ -49,8 +47,9 @@ def showBestMatch(img_target, kp1, des1, dataID):
     drawKPDES(img_target, kp1, des1, img_data, KPDESlist[maxID])
 
 if __name__=="__main__":
-    img_target_color = cv2.imread("target.jpg", cv2.IMREAD_COLOR)
-    img_target = cv2.imread("target.jpg", cv2.IMREAD_GRAYSCALE)
+    tofind = "targetA.jpg"
+    img_target_color = cv2.imread(tofind, cv2.IMREAD_COLOR)
+    img_target = cv2.imread(tofind, cv2.IMREAD_GRAYSCALE)
     kp1, des1 = getKPandDES(img_target, 200)
     dataListName = []
     rootPath = "./dataset"
