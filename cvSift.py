@@ -2,6 +2,8 @@ import cv2
 import numpy as np 
 
 
+img_target_color = cv2.imread("target.jpg", cv2.IMREAD_COLOR)
+img_data_color = cv2.imread("./dataset/3.jpg", cv2.IMREAD_COLOR)
 img_target = cv2.imread("target.jpg", cv2.IMREAD_GRAYSCALE)
 img_data = cv2.imread("./dataset/3.jpg", cv2.IMREAD_GRAYSCALE)
 
@@ -20,8 +22,8 @@ M = max([img_target.shape[0], img_data.shape[0]])
 N = img_target.shape[1] + img_data.shape[1]
 img_match = np.zeros((M, N))
 img_match = np.zeros(())
-img_match = cv2.drawMatchesKnn(img_target, kp1, img_data, kp2, 
-    nice_match, img_match, matchColor=[0,0,255], singlePointColor=[0,0,0])
+img_match = cv2.drawMatchesKnn(img_target_color, kp1, img_data_color, kp2, 
+    nice_match, img_match, matchColor=[0,0,255], singlePointColor=[255,0,0])
 
 cv2.imshow("CvMatch", img_match)
 cv2.waitKey(0)

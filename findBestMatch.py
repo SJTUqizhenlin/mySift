@@ -15,7 +15,7 @@ def countMatchNumber(kp1, des1, data):
         matches = bf.knnMatch(des1, des2, k=2)
         nice_match = []
         for m, n in matches:
-            if m.distance < 0.8 * n.distance:
+            if m.distance < 0.7 * n.distance:
                 nice_match.append([m])
         if len(nice_match) > res:
             res = len(nice_match)
@@ -41,7 +41,7 @@ def showBestMatch(img_target, kp1, des1, dataID):
         matches = bf.knnMatch(des1, des2, k=2)
         nice_match = []
         for m, n in matches:
-            if m.distance < 0.8 * n.distance:
+            if m.distance < 0.7 * n.distance:
                 nice_match.append([m])
         if len(nice_match) > maxNum:
             maxNum = len(nice_match)
