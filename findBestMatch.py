@@ -47,7 +47,7 @@ def showBestMatch(img_target, kp1, des1, dataID):
     drawKPDES(img_target, kp1, des1, img_data, KPDESlist[maxID])
 
 if __name__=="__main__":
-    tofind = "targetE.jpg"
+    tofind = "targetA.jpg"
     img_target_color = cv2.imread(tofind, cv2.IMREAD_COLOR)
     img_target = cv2.imread(tofind, cv2.IMREAD_GRAYSCALE)
     kp1, des1 = getKPandDES(img_target, 200)
