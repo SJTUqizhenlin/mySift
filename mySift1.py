@@ -87,7 +87,7 @@ def getKPandDES(img, MaxCorner):
                 ind = int(sub_direct[i,j] * 18 / np.pi)
                 main_direct_bin[0,ind] += sub_norm[i,j]
         main_direct = np.argmax(main_direct_bin) * (np.pi/18) + (np.pi/36) 
-        sub_norm, sub_direct = subGraph(img, grad_direct, x, y, main_direct)
+        sub_norm, sub_direct = subGraph(grad_norm, grad_direct, x, y, main_direct)
         main_direct_list[ip] = main_direct
         deslist = [0.0] * 128
         for i in range(16):
@@ -140,7 +140,7 @@ def drawKPDES(img_target, kp1, des1, img_data, kpdes):
     matches = bf.knnMatch(des1, des2, k=2)
     nice_match = []
     for m, n in matches:
-        if m.distance < 0.8 * n.distance:
+        if m.distance < 0.75 * n.distance:
             nice_match.append([m])
     M = max([img_target.shape[0], img_data.shape[0]])
     N = img_target.shape[1] + img_data.shape[1]

@@ -14,7 +14,7 @@ def countMatchNumber(kp1, des1, data):
         matches = bf.knnMatch(des1, des2, k=2)
         nice_match = []
         for m, n in matches:
-            if m.distance < 0.8 * n.distance:
+            if m.distance < 0.75 * n.distance:
                 nice_match.append([m])
         if len(nice_match) > res:
             res = len(nice_match)
@@ -39,7 +39,7 @@ def showBestMatch(img_target, kp1, des1, dataID):
         matches = bf.knnMatch(des1, des2, k=2)
         nice_match = []
         for m, n in matches:
-            if m.distance < 0.8 * n.distance:
+            if m.distance < 0.75 * n.distance:
                 nice_match.append([m])
         if len(nice_match) > maxNum:
             maxNum = len(nice_match)
@@ -47,7 +47,7 @@ def showBestMatch(img_target, kp1, des1, dataID):
     drawKPDES(img_target, kp1, des1, img_data, KPDESlist[maxID])
 
 if __name__=="__main__":
-    tofind = "targetA.jpg"
+    tofind = "targetE.jpg"
     img_target_color = cv2.imread(tofind, cv2.IMREAD_COLOR)
     img_target = cv2.imread(tofind, cv2.IMREAD_GRAYSCALE)
     kp1, des1 = getKPandDES(img_target, 200)
